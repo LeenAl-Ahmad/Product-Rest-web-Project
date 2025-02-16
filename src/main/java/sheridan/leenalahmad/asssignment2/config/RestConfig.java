@@ -1,22 +1,18 @@
 package sheridan.leenalahmad.asssignment2.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import sheridan.leenalahmad.asssignment2.data.JPA.Product;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
-public class RestConfig {
+@Component
+public class RestConfig implements RepositoryRestConfigurer {
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // Adjust if needed
-                        .allowedMethods("GET", "POST", "PUT", "DELETE");
-            }
-        };
+    @Override
+    public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
+        // Expose IDs for the Product entity
+        config.exposeIdsFor(Product.class);
     }
 }
+
